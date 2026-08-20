@@ -300,7 +300,7 @@ export const makePendingOpenCodeProvider = (
           status: "warning",
           auth: { status: "unknown" },
           message:
-            openCodeSettings.serverUrl.trim().length > 0
+            (openCodeSettings.serverUrl?.trim() ?? "").length > 0
               ? "OpenCode is disabled in T3 Code settings. A server URL is configured."
               : "OpenCode is disabled in T3 Code settings.",
         },
@@ -331,7 +331,7 @@ export const checkOpenCodeProviderStatus = Effect.fn("checkOpenCodeProviderStatu
   const resolvedEnvironment = environment ?? process.env;
   const checkedAt = DateTime.formatIso(yield* DateTime.now);
   const customModels = openCodeSettings.customModels;
-  const isExternalServer = openCodeSettings.serverUrl.trim().length > 0;
+  const isExternalServer = (openCodeSettings.serverUrl?.trim() ?? "").length > 0;
 
   const fallback = (cause: unknown, version: string | null = null) => {
     const failure = formatOpenCodeProbeError({

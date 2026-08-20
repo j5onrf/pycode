@@ -479,46 +479,62 @@ export const OpenCodeSettings = makeProviderSettingsSchema(
     binaryPath: makeBinaryPathSetting("opencode").pipe(
       Schema.annotateKey({
         title: "Binary path",
-        description: "Path to the OpenCode binary.",
-        providerSettingsForm: {
-          placeholder: "opencode",
-          clearWhenEmpty: "omit",
-        },
+        description: "Path to opencode binary",
       }),
     ),
-    serverUrl: TrimmedString.pipe(
-      Schema.withDecodingDefault(Effect.succeed("")),
+    serverUrl: Schema.optionalKey(TrimmedString).pipe(
       Schema.annotateKey({
         title: "Server URL",
-        description: "Leave blank to let T3 Code spawn the server when needed.",
-        providerSettingsForm: {
-          placeholder: "http://127.0.0.1:4096",
-          clearWhenEmpty: "omit",
-        },
+        description: "External OpenCode server base URL (e.g. http://127.0.0.1:4096)",
       }),
     ),
-    serverPassword: TrimmedString.pipe(
-      Schema.withDecodingDefault(Effect.succeed("")),
+    serverPassword: Schema.optionalKey(TrimmedString).pipe(
       Schema.annotateKey({
         title: "Server password",
-        description: "Stored in plain text on disk.",
-        providerSettingsForm: {
-          control: "password",
-          placeholder: "Optional",
-          clearWhenEmpty: "omit",
-        },
+        description: "Password for external OpenCode server authentication",
       }),
     ),
     customModels: Schema.Array(Schema.String).pipe(
       Schema.withDecodingDefault(Effect.succeed([])),
-      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+      Schema.annotateKey({
+        title: "Custom models",
+        description: "OpenCode model slugs in 'provider/model' format (e.g. 'openai/gpt-5')",
+      }),
     ),
   },
-  {
-    order: ["binaryPath", "serverUrl", "serverPassword"],
-  },
+  { provider: "opencode" },
 );
 export type OpenCodeSettings = typeof OpenCodeSettings.Type;
+
+export const PyAgentSettings = makeProviderSettingsSchema(
+  {
+    enabled: Schema.Boolean.pipe(
+      Schema.withDecodingDefault(Effect.succeed(true)),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
+    binaryPath: makeBinaryPathSetting("python3").pipe(
+      Schema.annotateKey({
+        title: "Python Executable",
+        description: "Path to python3 binary",
+        providerSettingsForm: { placeholder: "python3", clearWhenEmpty: "omit" },
+      }),
+    ),
+    bridgePath: makeBinaryPathSetting(
+      `${process.env.HOME ?? ""}/.config/py-agent/plugins/t3code/bridge.py`,
+    ).pipe(
+      Schema.annotateKey({
+        title: "Py Agent Bridge Script",
+        description: "Path to ~/.config/py-agent/plugins/t3code/bridge.py",
+        providerSettingsForm: {
+          placeholder: "~/.config/py-agent/plugins/t3code/bridge.py",
+          clearWhenEmpty: "omit",
+        },
+      }),
+    ),
+  },
+  { provider: "pyagent" },
+);
+export type PyAgentSettings = typeof PyAgentSettings.Type;
 
 export const ObservabilitySettings = Schema.Struct({
   otlpTracesUrl: TrimmedString.pipe(Schema.withDecodingDefault(Effect.succeed(""))),
@@ -662,6 +678,7 @@ export const ServerSettings = Schema.Struct({
     cursor: CursorSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
     grok: GrokSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
     opencode: OpenCodeSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
+    pyagent: PyAgentSettings.pipe(Schema.withDecodingDefault(Effect.succeed({}))),
   }).pipe(Schema.withDecodingDefault(Effect.succeed({}))),
   // New driver-agnostic instance map. Keyed by `ProviderInstanceId`; values
   // are `ProviderInstanceConfig` envelopes. The driver-specific config blob
@@ -809,6 +826,12 @@ const OpenCodeSettingsPatch = Schema.Struct({
   customModels: Schema.optionalKey(Schema.Array(Schema.String)),
 });
 
+const PyAgentSettingsPatch = Schema.Struct({
+  enabled: Schema.optionalKey(Schema.Boolean),
+  binaryPath: Schema.optionalKey(TrimmedString),
+  bridgePath: Schema.optionalKey(TrimmedString),
+});
+
 export const ServerSettingsPatch = Schema.Struct({
   // Server settings
   enableLegacyTokenStreaming: Schema.optionalKey(Schema.Boolean),
@@ -850,6 +873,7 @@ export const ServerSettingsPatch = Schema.Struct({
       cursor: Schema.optionalKey(CursorSettingsPatch),
       grok: Schema.optionalKey(GrokSettingsPatch),
       opencode: Schema.optionalKey(OpenCodeSettingsPatch),
+      pyagent: Schema.optionalKey(PyAgentSettingsPatch),
     }),
   ),
   // Whole-map replacement for the new instance config. Patching individual
