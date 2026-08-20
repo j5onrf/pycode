@@ -211,6 +211,33 @@ export const GrokIcon: Icon = ({ className, ...props }) => (
   </svg>
 );
 
+export const PyAgentIcon: Icon = ({ className, ...props }) => (
+  <svg
+    {...props}
+    viewBox="100 80 310 350"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M 210 125 C 150 125, 150 215, 210 215 L 300 215 C 360 215, 360 305, 300 305 L 240 305"
+      stroke="currentColor"
+      strokeWidth="18"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M 300 385 C 360 385, 360 295, 300 295 L 210 295 C 150 295, 150 205, 210 205 L 270 205"
+      stroke="currentColor"
+      strokeWidth="18"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle cx="210" cy="125" r="7" fill="currentColor" />
+    <circle cx="300" cy="385" r="7" fill="currentColor" />
+  </svg>
+);
+
 export const TraeIcon: Icon = (props) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor">
     {/* Back rectangle: left strip + bottom strip drawn separately — empty bottom-left corner is the gap between them */}

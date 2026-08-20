@@ -1,120 +1,118 @@
-# T3 Code
+<h1 align="center">∿ PyCode <img src="https://shieldcn.dev/badge/version-v0.9.8.79 beta.svg?variant=secondary" alt="Version"></h1>
 
-T3 Code is an "agent harness control surface". It enables control of the agents on your machine with a best-in-class mobile app ([iOS](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824), [Android](https://play.google.com/store/apps/details?id=com.t3tools.t3code)), [web app](https://app.t3.codes) and [Electron-based desktop app](https://t3.codes).
+<p align="center">
+  <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/github/last-commit/j5onrf/pycode.svg?color=emerald&variant=secondary" alt="Last Commit"></a>
+  <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/badge/TypeScript.svg?variant=branded&brand=typescript" alt="TypeScript"></a>
+  <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/badge/Electron.svg?variant=branded&brand=electron" alt="Electron"></a>
+  <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/badge/React.svg?variant=branded&brand=react" alt="React"></a>
+  <a href="https://github.com/j5onrf/pycode/blob/main/LICENSE"><img src="https://shieldcn.dev/badge/license-MIT-green.svg" alt="License"></a>
+</p>
 
-Works with your subscriptions on Claude Code, Codex, Cursor, Grok Build, and OpenCode. If they're set up on your computer, T3 Code can control them.
+<p align="center">
+  <b>Fast Native Desktop & Web Development GUI for <a href="https://github.com/j5onrf/py-agent">Py-Agent</a></b><br>
+  Powered by the Agent Client Protocol (ACP) over stdio JSON-RPC.
+</p>
 
-## "Wait, what are you selling me?"
+---
 
-Nothing. We built T3 Code because we wanted the best possible development experience with agents. We were inspired by existing solutions like the Codex desktop app, Conductor, Claude Desktop and Cursor Glass, but none met our bar.
+<h2 align="center">Overview</h2>
 
-We wanted something performant, remote-ready, and truly open. If we ever go the wrong direction, we want you to have everything you need to fork and build the editor that you want.
+**PyCode** is a native Electron and Web desktop IDE for **Py-Agent**. Forked from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code), it bridges your local Python orchestration engine and `llama-server` into an interface featuring real-time thinking traces, AST codebase maps, and multi-turn chat.
 
-## Installation
+- **Native ACP stdio Protocol:** Speaks JSON-RPC 2.0 directly to `py-agent`'s headless engine with zero daemon overhead.
+- **Real-Time Thinking & Token Stream:** Streams thought processes and response tokens live into the UI.
+- **CLI Suspension & Smooth Resumption:** Launch `/pyc` from the terminal to suspend the CLI and smoothly resume your session on window close.
+- **Dual Execution Modes:** Runs as a fast native Wayland/X11 Electron app on Linux or as a local browser WebUI.
 
-> [!WARNING]
-> T3 Code currently supports Codex, Claude, Cursor, Grok Build and OpenCode. Install and authenticate at least one provider before use:
->
-> - Codex: install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`
-> - Claude: install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`
-> - Cursor: install [Cursor CLI](https://cursor.com/cli) and run `agent login`
-> - Grok Build: install [Grok Build CLI](https://x.ai/cli) and run `grok login`
-> - OpenCode: install [OpenCode](https://opencode.ai) and run `opencode auth login`
+---
 
-### Try it out (install-free)
+<h2 align="center">Architecture & ACP Flow</h2>
 
-The easiest way to test T3 Code is to run the server in your terminal (requires Node.js 22.16+, 23.11+, or 24.10+):
-
-```bash
-npx t3@latest
+```
+  ┌────────────────────────────────────────────────────────┐
+  │                   PyCode GUI (Electron)                │
+  │     [React UI] ◄──► [PyAgentAdapter] ◄──► [ACP Client] │
+  └───────────────────────────┬────────────────────────────┘
+                              │ stdio JSON-RPC 2.0 (ACP)
+                              ▼
+  ┌────────────────────────────────────────────────────────┐
+  │                 Py-Agent Headless Bridge               │
+  │     [plugins/pycode/bridge.py] ◄──► [agent_core.py]    │
+  └───────────────────────────┬────────────────────────────┘
+                              │ HTTP SSE / Tools
+                              ▼
+  ┌────────────────────────────────────────────────────────┐
+  │           llama-server / Cloud API Cascade             │
+  │    (LFM2.5-8B, Qwen3.6-35B, DeepSeek, Claude, GPT)     │
+  └────────────────────────────────────────────────────────┘
 ```
 
-This will launch T3 Code's backend on your machine as well as the local web app to control your agents.
+---
 
-Tip: Use `npx t3@latest --help` for the full CLI reference.
+<h2 align="center">Key Features</h2>
 
-### Desktop app
+| Feature                 | Description                                                                                     |
+| :---------------------- | :---------------------------------------------------------------------------------------------- |
+| **`∿ PyCode` Branding** | Minimal typography with dual-tone bold `Py` and clean baseline alignment.                       |
+| **Custom Vector Icon**  | Integrated 18px line-art interlocking Python loop matching native OpenAI/Claude visual density. |
+| **ACP Provider Driver** | First-party `pyagent` driver registered across server, contracts, and frontend layers.          |
+| **Live Thought Stream** | Formats thinking into quote blocks (`> *Thinking...*`) matching `llama.cpp` WebUI.              |
+| **Dynamic Workspaces**  | Automatically syncs project roots, AST codebase maps (`index-map`), and `.agent/tpm.md` facts.  |
+| **Fast CLI Shortcuts**  | Launch directly from `py-agent` with `/pyc` or `/pycode` (desktop) and `/pyc web` (browser).    |
 
-Install the latest version of the desktop app from [GitHub Releases](https://github.com/pingdotgg/t3code/releases), or from your favorite package registry:
+---
 
-#### Windows (`winget`)
+<h2 align="center">Upstream Fork Manifest</h2>
 
-```bash
-winget install T3Tools.T3Code
-```
+All modifications are isolated to ensure updates from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code) merge cleanly:
 
-#### macOS (Homebrew)
+| Layer                | File Path                                           | Modification Summary                                                   |
+| :------------------- | :-------------------------------------------------- | :--------------------------------------------------------------------- |
+| **Driver**           | `apps/server/src/provider/Drivers/PyAgentDriver.ts` | Registered `PyAgentDriver`, snapshot metadata, & reasoning options     |
+| **Adapter**          | `apps/server/src/provider/Layers/PyAgentAdapter.ts` | Effect ACP session lifecycle, scope isolation, & `item.started` events |
+| **Runtime**          | `apps/server/src/provider/acp/PyAgentAcpSupport.ts` | Process spawner for `plugins/pycode/bridge.py`                         |
+| **Drivers Registry** | `apps/server/src/provider/builtInDrivers.ts`        | Added `PyAgentDriver` to `BUILT_IN_DRIVERS`                            |
+| **Brand Chrome**     | `apps/web/src/components/sidebar/SidebarChrome.tsx` | Minimal `∿ PyCode` top brand lockup                                    |
+| **Vector Icons**     | `apps/web/src/components/Icons.tsx`                 | Flat monochrome `PyAgentIcon` vector component                         |
+| **Icon Mapping**     | `apps/web/src/components/chat/providerIconUtils.ts` | Mapped `pyagent` driver keys to `PyAgentIcon`                          |
+| **Global Brand**     | `apps/web/src/branding.ts`                          | Updated default fallback display name                                  |
+| **Contracts**        | `packages/contracts/src/model.ts`                   | Declared `PYAGENT_DRIVER_KIND` & `local-model` defaults                |
+| **Contracts**        | `packages/contracts/src/settings.ts`                | Added `PyAgentSettings` schema & settings registry                     |
 
-```bash
-brew install --cask t3-code
-```
+---
 
-#### Arch Linux (AUR)
+<h2 align="center">Setup & Installation</h2>
 
-Stable:
+### Prerequisites
 
-```bash
-yay -S t3code-bin
-```
-
-Nightly:
-
-```bash
-yay -S t3code-nightly-bin
-```
-
-The AUR packaging is maintained in this repository under [`packaging/aur`](./packaging/aur).
-
-## Some notes
-
-We are very very early in this project. Expect bugs.
-
-We are (mostly) not accepting contributions yet. Small fixes may be considered. Big features will not be.
-
-## Documentation
-
-Full docs live in [docs/](./docs). There's no docs site yet.
-
-- [Install and first run](./docs/user/install.md)
-- [Permission modes](./docs/user/permission-modes.md)
-- [Keyboard shortcuts](./docs/user/keybindings.md)
-- [Customize a project icon](./docs/user/project-settings.md)
-- [Remote access from a phone or another machine](./docs/user/remote-access.md)
-- [Keeping app and server in sync](./docs/user/updating.md)
-- [Source control integrations](./docs/user/source-control.md)
-- Multiple accounts: [Codex](./docs/user/providers-codex.md) · [Claude](./docs/user/providers-claude.md)
-- Linux: [run T3 Code as a background service](./docs/user/background-service.md)
-
-Building from source? Start at [docs/internals/overview.md](./docs/internals/overview.md).
-
-## If you REALLY want to contribute still.... read this first
-
-### Install `vp`
-
-T3 Code uses Vite+ so you'll need to install the global `vp` command-line tool.
-
-#### macOS / Linux
+- **Node.js**: `v20+` or `v22+`
+- **pnpm**: `v9+` (`corepack enable && corepack prepare pnpm@latest --activate`)
+- **Python 3.10+** (with [`py-agent`](https://github.com/j5onrf/py-agent) configured)
 
 ```bash
-curl -fsSL https://vite.plus | bash
+# Option 1: Automatic 1-command installer (if using py-agent)
+~/.config/py-agent/plugins/pycode/setup.sh
+
+# Option 2: Manual setup from source
+git clone https://github.com/j5onrf/pycode.git ~/.config/pycode
+cd ~/.config/pycode
+pnpm install
+pnpm build
 ```
 
-#### Windows
+---
 
-```bash
-irm https://vite.plus/ps1 | iex
-```
+<h2 align="center">Launching PyCode</h2>
 
-Checkout their getting started guide for more information: https://viteplus.dev/guide/
+| Launch Method               | Command                                           | Description                                        |
+| :-------------------------- | :------------------------------------------------ | :------------------------------------------------- |
+| **From Py-Agent CLI**       | `/pyc` (or `/pycode`)                             | Suspends CLI and opens native Electron Desktop GUI |
+| **From Py-Agent CLI (Web)** | `/pyc web`                                        | Suspends CLI and opens WebUI in default browser    |
+| **Direct Shell (Desktop)**  | `~/.config/py-agent/plugins/pycode/launch.sh`     | Launches Electron GUI for current directory        |
+| **Direct Shell (Web)**      | `~/.config/py-agent/plugins/pycode/launch.sh web` | Starts WebUI server on `http://localhost:3773`     |
 
-### Install dependencies
+---
 
-```bash
-vp i
-```
+<h2 align="center">License</h2>
 
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) before reporting a bug or opening a PR.
-
-Have a feature request? Start an [Ideas discussion](https://github.com/pingdotgg/t3code/discussions/categories/ideas).
-
-Need support? Join the [Discord](https://discord.gg/jn4EGJjrvv).
+Distributed under the [MIT License](LICENSE). Built for the [`py-agent`](https://github.com/j5onrf/py-agent) ecosystem.

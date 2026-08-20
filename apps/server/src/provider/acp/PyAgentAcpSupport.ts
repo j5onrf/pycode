@@ -29,7 +29,7 @@ export function buildPyAgentAcpSpawnInput(
   cwd: string,
   environment?: NodeJS.ProcessEnv,
 ): AcpSessionRuntime.AcpSpawnInput {
-  const defaultBridge = path.join(os.homedir(), ".config/py-agent/plugins/t3code/bridge.py");
+  const defaultBridge = path.join(os.homedir(), ".config/py-agent/plugins/pycode/bridge.py");
   const bridgeScript = pyagentSettings?.bridgePath || defaultBridge;
   const pythonBin = pyagentSettings?.binaryPath || "python3";
 

@@ -377,6 +377,8 @@ const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolv
     const serverExposure = yield* DesktopServerExposure.DesktopServerExposure;
     const backendExposure = yield* serverExposure.backendConfig;
 
+    const targetWorkspace = process.env.AI_WORKSPACE_PATH || environment.backendCwd;
+
     const bootstrap = {
       mode: "desktop" as const,
       noBrowser: true,
@@ -384,6 +386,7 @@ const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolv
       t3Home: environment.baseDir,
       host: backendExposure.bindHost,
       desktopBootstrapToken: input.bootstrapToken,
+      autoBootstrapProjectFromCwd: true,
       tailscaleServeEnabled: backendExposure.tailscaleServeEnabled,
       tailscaleServePort: backendExposure.tailscaleServePort,
       desktopTelemetryFd: 4,
@@ -399,10 +402,12 @@ const resolvePrimaryStartConfig = Effect.fn("desktop.backendConfiguration.resolv
       executablePath: process.execPath,
       args: [environment.backendEntryPath, "--bootstrap-fd", "3"],
       entryPath: environment.backendEntryPath,
-      cwd: environment.backendCwd,
+      cwd: targetWorkspace,
       env: {
         ...backendChildEnvPatch(),
         ELECTRON_RUN_AS_NODE: "1",
+        AI_WORKSPACE_PATH: targetWorkspace,
+        T3CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD: "true",
       },
       // Primary wants process.env (PATH, dev-runner's T3CODE_HOME, etc.).
       extendEnv: true,

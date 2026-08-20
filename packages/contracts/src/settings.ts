@@ -520,7 +520,7 @@ export const PyAgentSettings = makeProviderSettingsSchema(
       }),
     ),
     bridgePath: makeBinaryPathSetting(
-      `${process.env.HOME ?? ""}/.config/py-agent/plugins/t3code/bridge.py`,
+      `${process.env.HOME ?? ""}/.config/py-agent/plugins/pycode/bridge.py`,
     ).pipe(
       Schema.annotateKey({
         title: "Py Agent Bridge Script",
