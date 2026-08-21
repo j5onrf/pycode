@@ -64,12 +64,12 @@
 
 | Feature                 | Description                                                                                     |
 | :---------------------- | :---------------------------------------------------------------------------------------------- |
+| **Minimal Interface**   | Stripped top-bar branding for a clean, distraction-free workspace.                              |
 | **Custom Vector Icon**  | Integrated 18px line-art interlocking Python loop matching native OpenAI/Claude visual density. |
 | **ACP Provider Driver** | First-party `pyagent` driver registered across server, contracts, and frontend layers.          |
 | **Thought Traces**      | Formats model reasoning and thinking into clean markdown quote blocks (`> *Thinking...*`).      |
 | **Dynamic Workspaces**  | Automatically syncs project roots, AST codebase maps (`index-map`), and `.agent/tpm.md` facts.  |
 | **Fast CLI Shortcuts**  | Launch directly from `py-agent` with `/pyc` or `/pycode` (desktop) and `/pyc web` (browser).    |
-| **Minimal Interface**   | Stripped top-bar branding for a clean, distraction-free workspace.                              |
 
 ---
 
