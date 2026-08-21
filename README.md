@@ -1,4 +1,4 @@
-<h1 align="center">∿ PyCode <img src="https://shieldcn.dev/badge/version-v0.9.8.79 beta.svg?variant=secondary" alt="Version"></h1>
+<h1 align="center">∿ PyCode <img src="https://shieldcn.dev/badge/version-v0.9.8.82%20beta.svg?variant=secondary" alt="Version"></h1>
 
 <p align="center">
   <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/github/last-commit/j5onrf/pycode.svg?color=emerald&variant=secondary" alt="Last Commit"></a>
@@ -17,12 +17,13 @@
 
 <h2 align="center">Overview</h2>
 
-**PyCode** is a native Electron and Web desktop IDE for **Py-Agent**. Forked from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code), it bridges your local Python orchestration engine and `llama-server` into an interface featuring real-time thinking traces, AST codebase maps, and multi-turn chat.
+**PyCode** is a native Electron and Web IDE for **Py-Agent**, forked from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code).
 
-- **Native ACP stdio Protocol:** Speaks JSON-RPC 2.0 directly to `py-agent`'s headless engine with zero daemon overhead.
-- **Real-Time Thinking & Token Stream:** Streams thought processes and response tokens live into the UI.
-- **CLI Suspension & Smooth Resumption:** Launch `/pyc` from the terminal to suspend the CLI and smoothly resume your session on window close.
-- **Dual Execution Modes:** Runs as a fast native Wayland/X11 Electron app on Linux or as a local browser WebUI.
+- **Native ACP Protocol:** Speaks stdio JSON-RPC 2.0 directly to `py-agent` with zero daemon overhead.
+- **Thought Formatting:** Renders reasoning and thought processes into clean markdown quote blocks (`> *Thinking...*`).
+- **CLI Suspension:** Launch `/pyc` from terminal to pause CLI and resume automatically on window close.
+- **Dual Execution:** Runs as an Electron Desktop app or local browser WebUI (`http://localhost:3773`).
+- **Active Development:** New features and agent capabilities actively being added.
 
 ---
 
@@ -30,7 +31,7 @@
 
 <div align="center">
   <kbd>
-    <img width="800" alt="PyCode GUI Desktop APP" src="https://github.com/user-attachments/assets/d00ab7bb-9afb-41ba-9751-622c565f5c72" />
+    <img width="800" alt="PyCode GUI Desktop GUI" src="https://github.com/user-attachments/assets/ed6c6aee-cf05-4270-a276-3e35270bed00" />
   </kbd>
 </div>
 
@@ -63,12 +64,12 @@
 
 | Feature                 | Description                                                                                     |
 | :---------------------- | :---------------------------------------------------------------------------------------------- |
-| **`∿ PyCode` Branding** | Minimal typography with dual-tone bold `Py` and clean baseline alignment.                       |
 | **Custom Vector Icon**  | Integrated 18px line-art interlocking Python loop matching native OpenAI/Claude visual density. |
 | **ACP Provider Driver** | First-party `pyagent` driver registered across server, contracts, and frontend layers.          |
-| **Live Thought Stream** | Formats thinking into quote blocks (`> *Thinking...*`) matching `llama.cpp` WebUI.              |
+| **Thought Traces**      | Formats model reasoning and thinking into clean markdown quote blocks (`> *Thinking...*`).      |
 | **Dynamic Workspaces**  | Automatically syncs project roots, AST codebase maps (`index-map`), and `.agent/tpm.md` facts.  |
 | **Fast CLI Shortcuts**  | Launch directly from `py-agent` with `/pyc` or `/pycode` (desktop) and `/pyc web` (browser).    |
+| **Minimal Interface**   | Stripped top-bar branding for a clean, distraction-free workspace.                              |
 
 ---
 
@@ -82,7 +83,7 @@ All modifications are isolated to ensure updates from [`pingdotgg/t3code`](https
 | **Adapter**          | `apps/server/src/provider/Layers/PyAgentAdapter.ts` | Effect ACP session lifecycle, scope isolation, & `item.started` events |
 | **Runtime**          | `apps/server/src/provider/acp/PyAgentAcpSupport.ts` | Process spawner for `plugins/pycode/bridge.py`                         |
 | **Drivers Registry** | `apps/server/src/provider/builtInDrivers.ts`        | Added `PyAgentDriver` to `BUILT_IN_DRIVERS`                            |
-| **Brand Chrome**     | `apps/web/src/components/sidebar/SidebarChrome.tsx` | Minimal `∿ PyCode` top brand lockup                                    |
+| **Brand Chrome**     | `apps/web/src/components/sidebar/SidebarChrome.tsx` | Clean zero-branding top sidebar                                        |
 | **Vector Icons**     | `apps/web/src/components/Icons.tsx`                 | Flat monochrome `PyAgentIcon` vector component                         |
 | **Icon Mapping**     | `apps/web/src/components/chat/providerIconUtils.ts` | Mapped `pyagent` driver keys to `PyAgentIcon`                          |
 | **Global Brand**     | `apps/web/src/branding.ts`                          | Updated default fallback display name                                  |
@@ -100,10 +101,11 @@ All modifications are isolated to ensure updates from [`pingdotgg/t3code`](https
 - **Python 3.10+** (with [`py-agent`](https://github.com/j5onrf/py-agent) configured)
 
 ```bash
-# Option 1: Automatic 1-command installer (if using py-agent)
-~/.config/py-agent/plugins/pycode/setup.sh
+# Automatic setup (if using py-agent)
+install-pycode
+# (or run: ~/.config/py-agent/plugins/pycode/setup.sh)
 
-# Option 2: Manual setup from source
+# Or clone & build manually
 git clone https://github.com/j5onrf/pycode.git ~/.config/pycode
 cd ~/.config/pycode
 pnpm install
