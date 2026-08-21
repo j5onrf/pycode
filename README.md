@@ -26,6 +26,16 @@
 
 ---
 
+<h2 align="center">Desktop APP</h2>
+
+<div align="center">
+  <kbd>
+    <img width="800" alt="PyCode GUI Desktop APP" src="https://github.com/user-attachments/assets/d00ab7bb-9afb-41ba-9751-622c565f5c72" />
+  </kbd>
+</div>
+
+---
+
 <h2 align="center">Architecture & ACP Flow</h2>
 
 ```
