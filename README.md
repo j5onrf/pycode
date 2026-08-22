@@ -1,4 +1,4 @@
-<h1 align="center">∿ PyCode <img src="https://shieldcn.dev/badge/version-v0.9.8.82%20beta.svg?variant=secondary" alt="Version"></h1>
+<h1 align="center">∿ PyCode <img src="https://shieldcn.dev/badge/version-v0.9.8.83%20beta.svg?variant=secondary" alt="Version"></h1>
 
 <p align="center">
   <a href="https://github.com/j5onrf/pycode"><img src="https://shieldcn.dev/github/last-commit/j5onrf/pycode.svg?color=emerald&variant=secondary" alt="Last Commit"></a>
@@ -17,10 +17,11 @@
 
 <h2 align="center">Overview</h2>
 
-**PyCode** is a native Electron and Web IDE for **Py-Agent**, forked from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code).
+**PyCode** is a cross-platform React Desktop & Web development workspace for **Py-Agent**, forked from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code).
 
 - **Native ACP Protocol:** Speaks stdio JSON-RPC 2.0 directly to `py-agent` with zero daemon overhead.
 - **Thought Formatting:** Renders reasoning and thought processes into clean markdown quote blocks (`> *Thinking...*`).
+- **Theme Aurora Glow:** Hardware-accelerated Gemini-inspired ambient lighting behind the composer that adapts dynamically to all color palettes.
 - **CLI Suspension:** Launch `/pyc` from terminal to pause CLI and resume automatically on window close.
 - **Dual Execution:** Runs as an Electron Desktop app or local browser WebUI (`http://localhost:3773`).
 - **Active Development:** New features and agent capabilities actively being added.
@@ -62,14 +63,15 @@
 
 <h2 align="center">Key Features</h2>
 
-| Feature                 | Description                                                                                     |
-| :---------------------- | :---------------------------------------------------------------------------------------------- |
-| **Minimal Interface**   | Stripped top-bar branding for a clean, distraction-free workspace.                              |
-| **Custom Vector Icon**  | Integrated 18px line-art interlocking Python loop matching native OpenAI/Claude visual density. |
-| **ACP Provider Driver** | First-party `pyagent` driver registered across server, contracts, and frontend layers.          |
-| **Thought Traces**      | Formats model reasoning and thinking into clean markdown quote blocks (`> *Thinking...*`).      |
-| **Dynamic Workspaces**  | Automatically syncs project roots, AST codebase maps (`index-map`), and `.agent/tpm.md` facts.  |
-| **Fast CLI Shortcuts**  | Launch directly from `py-agent` with `/pyc` or `/pycode` (desktop) and `/pyc web` (browser).    |
+| Feature                 | Description                                                                                                                                      |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ambient Aurora Glow** | Optional Appearance toggle for GPU-composited, Gemini-inspired ambient lighting behind the composer with dynamic theme-reactive palette syncing. |
+| **Minimal Interface**   | Stripped top-bar branding for a clean, distraction-free workspace.                                                                               |
+| **Custom Vector Icon**  | Integrated 18px line-art interlocking Python loop matching native OpenAI/Claude visual density.                                                  |
+| **ACP Provider Driver** | First-party `pyagent` driver registered across server, contracts, and frontend layers.                                                           |
+| **Thought Traces**      | Formats model reasoning and thinking into clean markdown quote blocks (`> *Thinking...*`).                                                       |
+| **Dynamic Workspaces**  | Automatically syncs project roots, AST codebase maps (`index-map`), and `.agent/tpm.md` facts.                                                   |
+| **Fast CLI Shortcuts**  | Launch directly from `py-agent` with `/pyc` or `/pycode` (desktop) and `/pyc web` (browser).                                                     |
 
 ---
 
@@ -77,18 +79,20 @@
 
 All modifications are isolated to ensure updates from [`pingdotgg/t3code`](https://github.com/pingdotgg/t3code) merge cleanly:
 
-| Layer                | File Path                                           | Modification Summary                                                   |
-| :------------------- | :-------------------------------------------------- | :--------------------------------------------------------------------- |
-| **Driver**           | `apps/server/src/provider/Drivers/PyAgentDriver.ts` | Registered `PyAgentDriver`, snapshot metadata, & reasoning options     |
-| **Adapter**          | `apps/server/src/provider/Layers/PyAgentAdapter.ts` | Effect ACP session lifecycle, scope isolation, & `item.started` events |
-| **Runtime**          | `apps/server/src/provider/acp/PyAgentAcpSupport.ts` | Process spawner for `plugins/pycode/bridge.py`                         |
-| **Drivers Registry** | `apps/server/src/provider/builtInDrivers.ts`        | Added `PyAgentDriver` to `BUILT_IN_DRIVERS`                            |
-| **Brand Chrome**     | `apps/web/src/components/sidebar/SidebarChrome.tsx` | Clean zero-branding top sidebar                                        |
-| **Vector Icons**     | `apps/web/src/components/Icons.tsx`                 | Flat monochrome `PyAgentIcon` vector component                         |
-| **Icon Mapping**     | `apps/web/src/components/chat/providerIconUtils.ts` | Mapped `pyagent` driver keys to `PyAgentIcon`                          |
-| **Global Brand**     | `apps/web/src/branding.ts`                          | Updated default fallback display name                                  |
-| **Contracts**        | `packages/contracts/src/model.ts`                   | Declared `PYAGENT_DRIVER_KIND` & `local-model` defaults                |
-| **Contracts**        | `packages/contracts/src/settings.ts`                | Added `PyAgentSettings` schema & settings registry                     |
+| Layer                | File Path                                             | Modification Summary                                                            |
+| :------------------- | :---------------------------------------------------- | :------------------------------------------------------------------------------ |
+| **Driver**           | `apps/server/src/provider/Drivers/PyAgentDriver.ts`   | Registered `PyAgentDriver`, snapshot metadata, & reasoning options              |
+| **Adapter**          | `apps/server/src/provider/Layers/PyAgentAdapter.ts`   | Effect ACP session lifecycle, scope isolation, & `item.started` events          |
+| **Runtime**          | `apps/server/src/provider/acp/PyAgentAcpSupport.ts`   | Process spawner for `plugins/pycode/bridge.py`                                  |
+| **Drivers Registry** | `apps/server/src/provider/builtInDrivers.ts`          | Added `PyAgentDriver` to `BUILT_IN_DRIVERS`                                     |
+| **Brand Chrome**     | `apps/web/src/components/sidebar/SidebarChrome.tsx`   | Clean zero-branding top sidebar                                                 |
+| **Vector Icons**     | `apps/web/src/components/Icons.tsx`                   | Flat monochrome `PyAgentIcon` vector component                                  |
+| **Icon Mapping**     | `apps/web/src/components/chat/providerIconUtils.ts`   | Mapped `pyagent` driver keys to `PyAgentIcon`                                   |
+| **Global Brand**     | `apps/web/src/branding.ts`                            | Updated default fallback display name                                           |
+| **UI Components**    | `apps/web/src/components/chat/ChatComposer.tsx`       | Added GPU-composited theme-reactive ambient aurora glow & solid surface styling |
+| **Settings UI**      | `apps/web/src/components/settings/SettingsPanels.tsx` | Added `ChatGlowRow` toggle switch under Appearance settings                     |
+| **Contracts**        | `packages/contracts/src/model.ts`                     | Declared `PYAGENT_DRIVER_KIND` & `local-model` defaults                         |
+| **Contracts**        | `packages/contracts/src/settings.ts`                  | Added `PyAgentSettings` and `chatGlow` schema defaults & patch types            |
 
 ---
 
