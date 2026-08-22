@@ -28,11 +28,11 @@
 
 ---
 
-<h2 align="center">Desktop APP</h2>
+<h2 align="center">React Desktop IDE</h2>
 
 <div align="center">
   <kbd>
-    <img width="800" alt="PyCode GUI Desktop GUI" src="https://github.com/user-attachments/assets/ed6c6aee-cf05-4270-a276-3e35270bed00" />
+    <img width="800" alt="PyCode GUI Desktop GUI" src="https://github.com/user-attachments/assets/740d115d-ee72-429b-8285-88c4d228d883" />
   </kbd>
 </div>
 
