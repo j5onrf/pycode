@@ -2966,6 +2966,12 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
             onToggleMenu={toggleStashMenu}
           />
         ) : null}
+        {settings.chatGlow ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[220px] w-[120%] rounded-full bg-primary/25 blur-3xl transition-opacity duration-500 will-change-[opacity,transform]"
+          />
+        ) : null}
         <div
           data-chat-composer-main-surface="true"
           className={cn(
@@ -2982,6 +2988,9 @@ export const ChatComposer = memo(function ChatComposer(props: ChatComposerProps)
               isDragOverComposer ? "bg-accent/45 ring-1 ring-primary/70" : null,
               projectSelectionRequired ? "opacity-75" : null,
               composerProviderState.composerSurfaceClassName,
+              settings.chatGlow
+                ? "!bg-background !opacity-100 shadow-2xl border border-white/10"
+                : null,
             )}
           >
             {showCollapsedMobilePromptRow ? (

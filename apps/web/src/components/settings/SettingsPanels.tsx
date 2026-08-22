@@ -640,6 +640,7 @@ export function useSettingsRestore(onRestored?: () => void) {
     updateSettings({
       timestampFormat: DEFAULT_UNIFIED_SETTINGS.timestampFormat,
       wordWrap: DEFAULT_UNIFIED_SETTINGS.wordWrap,
+      chatGlow: DEFAULT_UNIFIED_SETTINGS.chatGlow,
       diffIgnoreWhitespace: DEFAULT_UNIFIED_SETTINGS.diffIgnoreWhitespace,
       environmentIdentificationMode: DEFAULT_UNIFIED_SETTINGS.environmentIdentificationMode,
       glassOpacity: DEFAULT_UNIFIED_SETTINGS.glassOpacity,
@@ -1299,6 +1300,7 @@ function WordWrapRow() {
   return (
     <SettingsRow
       {...searchableSetting("word-wrap")}
+      label="Word wrap"
       description="Wrap long lines in code blocks, tables, diffs, and file previews by default."
       resetAction={
         settings.wordWrap !== DEFAULT_UNIFIED_SETTINGS.wordWrap ? (
@@ -1313,6 +1315,32 @@ function WordWrapRow() {
           checked={settings.wordWrap}
           onCheckedChange={(checked) => updateSettings({ wordWrap: Boolean(checked) })}
           aria-label="Wrap code, tables, diffs, and file previews by default"
+        />
+      }
+    />
+  );
+}
+
+function ChatGlowRow() {
+  const settings = usePrimarySettings();
+  const updateSettings = useUpdatePrimarySettings();
+  return (
+    <SettingsRow
+      label="Chat glow"
+      description="Show an ambient theme glow behind the composer chat box."
+      resetAction={
+        settings.chatGlow !== DEFAULT_UNIFIED_SETTINGS.chatGlow ? (
+          <SettingResetButton
+            label="chat glow"
+            onClick={() => updateSettings({ chatGlow: DEFAULT_UNIFIED_SETTINGS.chatGlow })}
+          />
+        ) : null
+      }
+      control={
+        <Switch
+          checked={settings.chatGlow}
+          onCheckedChange={(checked) => updateSettings({ chatGlow: Boolean(checked) })}
+          aria-label="Show ambient theme glow behind the composer"
         />
       }
     />
@@ -1416,6 +1444,7 @@ function TypographySection() {
     >
       {advanced ? <FontSettingsGroup /> : <SimpleFontRows />}
       <WordWrapRow />
+      <ChatGlowRow />
     </SettingsSection>
   );
 }
